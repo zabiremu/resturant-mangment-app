@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "/logo.png";
+import "../App.css";
 import { FiPhoneCall } from "react-icons/fi";
 const Navbar = () => {
+  const [sticky, setSticky] = useState(false);
+
+  // sticky navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 0) {
+        setSticky(true);
+      } else {
+        setSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+  }, []);
+  console.log(sticky);
   const navItems = (
     <>
       <li>
@@ -45,8 +62,14 @@ const Navbar = () => {
     </>
   );
   return (
-    <header className="container mx-auto max-w-screen-2xl">
-      <div className="navbar xl:px-24">
+    <header className="container fixed mx-auto transition-all duration-300 ease-in-out max-w-screen-2xl">
+      <div
+        className={`navbar xl:px-24 ${
+          sticky
+            ? "bg-base-100 shadow-md transition-all ease-in-out duration-300"
+            : ""
+        }`}
+      >
         <div className="navbar-start">
           <div className="dropdown">
             <div tabindex="0" role="button" className="btn btn-ghost lg:hidden">
@@ -88,7 +111,7 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <a href="/" className="text-xl btn btn-ghost">
+          <a href="/">
             <img src={logo} alt="" />
           </a>
         </div>
